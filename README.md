@@ -21,10 +21,7 @@ This repository hosts the code and resources for an AI-powered agent designed to
     * [Section 1: Data Preparation & SQL Power](#section-1-data-preparation--sql-power)
     * [Section 2: AI Prediction Engine](#section-2-ai-prediction-engine)
     * [Section 3: Unique Angles & Business Impact](#section-3-unique-angles--business-impact)
-7.  [How to Run the Application](#7-how-to-run-the-application)
-8.  [Repository Structure](#8-repository-structure)
-9.  [Technologies Used](#9-technologies-used)
-10. [Future Enhancements](#10-future-enhancements)
+
 
 ---
 
