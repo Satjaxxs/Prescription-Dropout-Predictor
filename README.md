@@ -22,7 +22,6 @@ This repository hosts the code and resources for an AI-powered agent designed to
     * [Section 2: AI Prediction Engine](#section-2-ai-prediction-engine)
     * [Section 3: Unique Angles & Business Impact](#section-3-unique-angles--business-impact)
 
-
 ---
 
 ## 1. Project Overview
@@ -190,3 +189,56 @@ Your project uses Logistic Regression, XGBoost, and K-Means.
         3.  **Update Step**: Recalculate the centroids as the mean of all data points assigned to that cluster.
         4.  **Repeat**: Steps 2 and 3 are repeated until the centroids no longer change significantly, or a maximum number of iterations is reached.
     * **Standardization**: K-Means is sensitive to the scale of features, so `StandardScaler` is applied to the clustering features before applying K-Means. This ensures that features with larger numerical ranges do not disproportionately influence the distance calculations.
+
+## 6. Project Workflow
+
+The Streamlit application guides the user through three main sections:
+
+### Section 1: Data Preparation & SQL Power
+
+* **Objective**: Ingest raw data, clean and transform it, create new features, and make it ready for analysis and machine learning.
+* **Steps**:
+    1.  Load `Persistent_vs_NonPersistent.csv`.
+    2.  Rename columns and transform `Persistency_Flag` to `Adherent` (1=Not Adherent, 0=Adherent).
+    3.  **Crucially, artificially balance the `Adherent` target variable** by flipping a percentage of 'Adherent' patients to 'Not Adherent' to improve model training for the minority class.
+    4.  Simulate and add granular features like `Refill_Gap_Days`, `No_of_Refills`, `Total_Months_on_Drug`, `Number_of_chronic_conditions`, `Average_Fills_per_Month`, etc., based on `Adherent` status.
+    5.  Save the enhanced dataset to `patient_data_enhanced.csv`.
+    6.  Load the enhanced data into an SQLite database (`rx_retention_enhanced.sqlite`).
+    7.  Execute SQL queries to derive initial insights (e.g., average refill gaps by adherence, non-adherence trends by months on drug).
+
+### Section 2: AI Prediction Engine
+
+* **Objective**: Build, train, and evaluate machine learning models to predict patient adherence.
+* **Steps**:
+    1.  Load the `patient_data_enhanced.csv` dataset.
+    2.  Define features (X) and target (y - `Adherent`).
+    3.  Identify numerical and categorical features for preprocessing.
+    4.  Set up a `ColumnTransformer` for data preprocessing (StandardScaling for numerical, OneHotEncoding for categorical).
+    5.  Split data into training and testing sets (75/25 split, stratified).
+    6.  **Train and tune two classification models (Logistic Regression and XGBoost Classifier)**.
+        * **K-Fold Cross-Validation (e.g., 5-fold) is integrated with `GridSearchCV`** for hyperparameter tuning. This ensures robust performance evaluation and helps mitigate overfitting by training/testing on different data subsets.
+    7.  Evaluate models using accuracy, F1-score, confusion matrix, and classification reports on the test set. Average cross-validation scores are also presented for a more reliable performance estimate.
+    8.  The best-performing model (based on F1-score from cross-validation) is saved as `rx_retention_classifier_model.pkl` for future use.
+
+### Section 3: Unique Angles & Business Impact
+
+* **Objective**: Apply the trained model to generate advanced insights and estimate financial impact.
+* **Steps**:
+    1.  Load the enhanced dataset and the best-trained classifier model.
+    2.  Generate predictions (`Predicted_Adherent` and `Dropout_Risk_Probability`) for all patients.
+    3.  **Time-Aware Prediction**:
+        * Identify "high-risk" patients based on predicted non-adherence and a user-defined probability threshold.
+        * Analyze how average dropout risk changes with 'Total_Months_on_Drug', identifying critical intervention points (e.g., early months).
+    4.  **Behavioral Segmentation (K-Means Clustering)**:
+        * Cluster patients into distinct behavioral segments (number of clusters is user-adjustable) using key features like refill behavior, chronic conditions, and dropout risk.
+        * Characterize each segment with its average feature values, allowing for clear interpretation (e.g., "High-Risk, Inconsistent Refillers", "Low-Risk, Highly Adherent").
+        * Visualize cluster distribution using pie charts and scatter plots.
+    5.  **Financial Impact Estimation**:
+        * Calculate the `Potential_Revenue_Loss` for each predicted non-adherent patient using user-defined `Average Drug Price Per Month` and `Average Missed Months Per Dropout`.
+        * Sum these to get the `Total Estimated Annual Revenue Loss Due to Non-Adherence`.
+        * Break down this loss by `Age_Group` and `Behavioral_Cluster`.
+        * **Interactive Budget Analysis**:
+            * User inputs a `Company's Budget for Adherence Initiatives`.
+            * A `potential_loss_percentage` (e.g., 30%) is assumed to be mitigated by this budget.
+            * Calculate `Projected Net Gain/Loss` (Mitigated Loss - Budget).
+    6.  **Strategic Recommendations**: Provide actionable business improvement suggestions, directly linking them to identified problems and the financial analysis.
