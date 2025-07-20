@@ -21,6 +21,7 @@ This repository hosts the code and resources for an AI-powered agent designed to
     * [Section 1: Data Preparation & SQL Power](#section-1-data-preparation--sql-power)
     * [Section 2: AI Prediction Engine](#section-2-ai-prediction-engine)
     * [Section 3: Unique Angles & Business Impact](#section-3-unique-angles--business-impact)
+7.  [Business Strategy](#7-business-strategy)
 
 ---
 
@@ -179,7 +180,7 @@ Your project uses Logistic Regression, XGBoost, and K-Means.
 
 * **c) K-Means Clustering**
     K-Means is an unsupervised learning algorithm used for clustering data points into $K$ distinct clusters.
-    * **Objective**: The goal of K-Means is to partition $n$ data points into $K$ clusters, where each data point belongs to the cluster with the nearest mean (centroid).
+    * **Objective**: The goal of K-Means is to partition $n$ data points into $K$ distinct clusters, where each data point belongs to the cluster with the nearest mean (centroid).
     * **Minimization**: It aims to minimize the within-cluster sum of squares (WCSS), also known as inertia.
         $WCSS = \sum_{j=1}^{K} \sum_{i=1}^{n_j} ||x_i - c_j||^2$
         where $K$ is the number of clusters, $n_j$ is the number of data points in cluster $j$, $x_i$ is a data point, and $c_j$ is the centroid of cluster $j$.
@@ -242,3 +243,12 @@ The Streamlit application guides the user through three main sections:
             * A `potential_loss_percentage` (e.g., 30%) is assumed to be mitigated by this budget.
             * Calculate `Projected Net Gain/Loss` (Mitigated Loss - Budget).
     6.  **Strategic Recommendations**: Provide actionable business improvement suggestions, directly linking them to identified problems and the financial analysis.
+
+**Business Strategy:**
+The synthesis of these data points enables a powerful, data-driven business strategy:
+1.  **Identify At-Risk Patients:** Leveraging the rx_retention_classifier_model, patients with a high probability of non-persistence can be flagged.
+2.  **Targeted Intervention:** Resources for adherence initiatives ($C_{int}$) can then be strategically focused on these identified high-risk patients, rather than being disbursed indiscriminately. Examples of interventions include personalized medication reminders, patient education programs, follow-up calls from pharmacists or care coordinators, and simplified refill processes.
+3.  **Convert Non-Persistent to Persistent:** The ultimate goal is that a successful intervention changes a patient's behavior from being at-risk of non-persistence to becoming persistent. In such cases, the incremental gain in Profit_{Persistent} from continued refills far outweighs the cost of the intervention ($C_{int}$).
+4.  **Optimize Return on Investment (ROI):** The success of this strategy is measured by its ability to maximize the overall net gain. The objective is to ensure that the sum of (Profit_{Persistent} - C_{int}) for successfully intervened patients, combined with the continued profits from naturally persistent patients, significantly outweighs the LostProfit_{NonPersistent} from those who still drop out and the costs of failed interventions.
+    $$Optimize \ ROI = \text{Maximize} \left( \sum_{\text{Successfully Converted Patients}} (Profit_{Persistent} - C_{int}) + \sum_{\text{Naturally Persistent Patients}} Profit_{Persistent} \right) - \sum_{\text{Lost Profit from Non-Persistent}} - \sum_{\text{Costs of Failed Interventions}}$$
+By implementing this AI-powered approach, businesses can move from reactive problem-solving to proactive patient management, leading to improved financial performance and, critically, better health outcomes for patients.
