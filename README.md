@@ -7,21 +7,22 @@ This repository hosts the code and resources for an AI-powered agent designed to
 1.  [Project Overview](#1-project-overview)
 2.  [Business Problem & Solution](#2-business-problem--solution)
 3.  [Key Features](#3-key-features)
-4.  [Core Concepts](#4-core-concepts)
+**4.  [What the AI Model Did](#4-what-the-ai-model-did)**
+5.  [Core Concepts](#5-core-concepts)
     * [What is Adherence?](#what-is-adherence)
     * [High Risk of Adherence](#high-risk-of-adherence)
     * [Refill Gap Rates](#refill-gap-rates)
     * [Adherence Linked to Business](#adherence-linked-to-business)
     * [Financial Impact Analysis (Budget, Profit/Loss)](#financial-impact-analysis-budget-profitloss)
-5.  [Formulas and Mathematical Relations](#5-formulas-and-mathematical-relations)
+6.  [Formulas and Mathematical Relations](#6-formulas-and-mathematical-relations)
     * [Financial Impact Formulas](#financial-impact-formulas)
     * [Statistical Formulas (for Model Evaluation)](#statistical-formulas-for-model-evaluation)
     * [Mathematical Relations for Machine Learning Models](#mathematical-relations-for-machine-learning-models)
-6.  [Project Workflow](#6-project-workflow)
+7.  [Project Workflow](#7-project-workflow)
     * [Section 1: Data Preparation & SQL Power](#section-1-data-preparation--sql-power)
     * [Section 2: AI Prediction Engine](#section-2-ai-prediction-engine)
     * [Section 3: Unique Angles & Business Impact](#section-3-unique-angles--business-impact)
-7.  [Business Strategy](#7-business-strategy)
+8.  [Business Strategy](#8-business-strategy)
 
 ---
 
@@ -57,7 +58,35 @@ This project provides an AI-driven solution designed to:
 * **Interactive Budget Analysis:** Allows users to input a budget for adherence initiatives and see the projected net gain/loss based on a mitigation assumption.
 * **Strategic Recommendations:** Provides concrete, data-driven suggestions for business improvement, tailored to identified problems and segments.
 
-## 4. Core Concepts
+---
+
+## 4. What the AI Model Did
+
+The AI model within the Rx Retention AI Agent performed several crucial functions to transform raw patient data into actionable insights and predictions:
+
+* **Learned from Patient Data:**
+    * It took in all the various characteristics (features) of patients and their prescription history (the 72 columns like `Refill_Gap_Days`, `No_of_Refills`, `Total_Months_on_Drug`, `Number_of_chronic_conditions`, etc.).
+    * It then learned patterns from this data, specifically how these characteristics relate to whether a patient ended up being "Adherent" or "Not Adherent".
+
+* **Predicted Patient Adherence:**
+    * Using the patterns it learned, the model's primary task was to predict whether a new or existing patient is likely to become "Not Adherent" (i.e., stop taking their medication as prescribed).
+    * It outputs not just a "yes/no" prediction, but also a `Dropout_Risk_Probability`, which indicates how likely a patient is to drop out (a score between 0 and 1).
+
+* **Identified High-Risk Patients:**
+    * By predicting the `Dropout_Risk_Probability`, the AI model allowed the system to flag specific patients who are at a high risk of non-adherence, enabling proactive intervention.
+
+* **Performed Time-Aware Prediction:**
+    * It analyzed the dropout risk in relation to the `Total_Months_on_Drug`, helping to identify specific critical stages in a patient's treatment journey where they are most likely to stop adherence.
+
+* **Segmented Patient Behaviors:**
+    * Beyond just prediction, the model also used K-Means Clustering to group patients into distinct behavioral segments based on their adherence patterns and health characteristics. This helps understand different types of non-adherence.
+
+* **Quantified Financial Impact:**
+    * The model's predictions (specifically the `Dropout_Risk_Probability` for 'Not Adherent' patients) were used as a crucial input to calculate the potential revenue loss due to non-adherence. This directly links patient behavior to business finances.
+
+---
+
+## 5. Core Concepts
 
 ### What is Adherence?
 
@@ -95,7 +124,7 @@ This analysis quantifies the potential financial return of investing in adherenc
 
 This provides a direct financial justification for adherence initiatives, allowing businesses to make data-driven investment decisions.
 
-## 5. Formulas and Mathematical Relations
+## 6. Formulas and Mathematical Relations
 
 #### Financial Impact Formulas
 
