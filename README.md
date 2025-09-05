@@ -2,7 +2,7 @@
 
 This repository hosts the code and resources for an AI-powered agent designed to improve patient adherence to medication, forecast potential revenue loss due to non-adherence, and provide actionable business strategies for pharmaceutical and healthcare companies.
 
-## Table of Contents
+## Table of Contents ;
 
 1.  [Project Overview](#1-project-overview)
 2.  [Business Problem & Solution](#2-business-problem--solution)
